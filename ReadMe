@@ -88,6 +88,7 @@ Payroll
 1. **Access to Acumatica Framework**:
    - The lack of access to a demo or sandbox environment made it impossible to test the integration.
    - The Acumatica Framework requires a working instance to validate DACs, PXGraphs, and other components.
+    - I have requested a demo from Acumatica, and have been offered a prurchase through a partner.
 
 2. **Learning Curve**:
    - Acumatica’s development environment is unique, and adapting to its patterns (e.g., BQL and PXGraph) required significant research.
