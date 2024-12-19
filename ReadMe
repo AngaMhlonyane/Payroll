@@ -1,0 +1,129 @@
+# Payroll Application - Acumatica Framework Task
+
+## Overview
+This project demonstrates the development of a Payroll Management System designed to integrate with the Acumatica ERP Framework. The task required creating a backend and implementing payroll-specific functionality, including employee salary calculations, tax deductions, and net pay calculations. While I successfully implemented the core logic and structure, integration with the Acumatica Framework could not be fully tested due to limited access to an Acumatica environment.
+
+---
+
+## Database Script
+The following script creates the database table required for the Payroll Management System. It defines the schema that corresponds to the DAC (Data Access Class) used in the application:
+
+```sql
+CREATE TABLE Payroll (
+    PayrollID INT IDENTITY PRIMARY KEY,
+    EmployeeName NVARCHAR(50) NOT NULL,
+    GrossPay DECIMAL(18, 2) NOT NULL,
+    TaxRate DECIMAL(5, 2) NULL,
+    TaxAmount DECIMAL(18, 2) NULL,
+    Deductions DECIMAL(18, 2) NULL,
+    NetPay DECIMAL(18, 2) NULL
+);
+```
+
+---
+
+## Project Structure
+The project is organized as follows:
+
+```
+Payroll
+│
+├── Constants
+│   └── PayrollConstants.cs
+├── Extensions
+│   └── PayrollExtensions.cs
+├── Graphs
+│   └── PayrollEntry.cs
+├── Helpers
+│   └── PayrollHelpers.cs
+├── Models
+│   └── Payroll.cs
+└── Views
+    └── Payroll.aspx
+```
+
+### 1. **Constants**
+- **`PayrollConstants.cs`**:
+  - Contains default constants used in the application.
+  - Example: Default tax rate (`DefaultTaxRate = 15.0m`).
+
+### 2. **Extensions**
+- **`PayrollExtensions.cs`**:
+  - Includes reusable methods for payroll calculations.
+  - Example:
+    - `CalculateNetPay`: Calculates the net pay by subtracting deductions from gross pay.
+    - `CalculateTaxAmount`: Computes the tax amount based on the gross pay and tax rate.
+
+### 3. **Graphs**
+- **`PayrollEntry.cs`**:
+  - Implements the core business logic using Acumatica's PXGraph.
+  - Manages CRUD operations for the Payroll DAC.
+  - Includes a custom action `RecalculatePayroll` that recalculates payroll data for all records.
+  - Validates data fields to ensure correctness (e.g., gross pay must be greater than 0, deductions cannot exceed gross pay).
+
+### 4. **Helpers**
+- **`PayrollHelpers.cs`**:
+  - Provides utility methods to round values to two decimal places and ensure positive values.
+  - Example:
+    - `RoundToTwoDecimalPlaces`: Rounds a decimal value to two decimal places.
+    - `EnsurePositiveValue`: Ensures a value is non-negative.
+
+### 5. **Models**
+- **`Payroll.cs`**:
+  - Defines the `Payroll` DAC.
+  - Maps directly to the database table `Payroll`.
+  - Includes attributes and formulas for fields like `NetPay` and `TaxAmount`.
+  - Example formula:
+    - `NetPay = GrossPay - Deductions`
+    - `TaxAmount = GrossPay * (TaxRate / 100)`
+
+### 6. **Views**
+- **`Payroll.aspx`**:
+  - Defines the user interface for managing payroll records.
+  - Displays fields like Payroll ID, Employee Name, Gross Pay, Tax Rate, Tax Amount, Deductions, and Net Pay.
+  - Uses PXGrid to list records and PXDataSource to bind data to the `PayrollEntry` graph.
+---
+
+## Challenges Faced
+1. **Access to Acumatica Framework**:
+   - The lack of access to a demo or sandbox environment made it impossible to test the integration.
+   - The Acumatica Framework requires a working instance to validate DACs, PXGraphs, and other components.
+
+2. **Learning Curve**:
+   - Acumatica’s development environment is unique, and adapting to its patterns (e.g., BQL and PXGraph) required significant research.
+
+3. **Standalone Testing**:
+   - Without Acumatica, the project could only be tested in isolation using simulated scenarios and a local SQL Server database.
+---
+
+## Explanation of the Code
+
+### **Payroll.cs**
+This is the Data Access Class (DAC) that maps to the database table. It defines the fields for payroll records and includes calculated fields:
+- **GrossPay**: Total pay before deductions.
+- **TaxRate**: Percentage of tax applied.
+- **TaxAmount**: Calculated using the formula `GrossPay * (TaxRate / 100)`.
+- **NetPay**: Calculated as `GrossPay - Deductions`.
+
+### **PayrollEntry.cs**
+This is the main graph class:
+- Manages payroll records using PXSelect.
+- Implements a custom action `RecalculatePayroll` to recalculate payroll data.
+- Includes validation methods to ensure data integrity.
+
+### **PayrollExtensions.cs**
+Contains helper methods to perform calculations outside of the main graph logic, ensuring reusability.
+- Example: `CalculateNetPay` and `CalculateTaxAmount` methods.
+
+### **PayrollHelpers.cs**
+Provides utility methods for common tasks:
+- Rounding values.
+- Ensuring non-negative values.
+
+### **Payroll.aspx**
+Defines the UI using Acumatica’s ASPX controls.
+- Displays payroll records in a grid format.
+- Allows users to interact with fields and trigger graph actions.
+
+## Conclusion
+This project successfully demonstrates the structure and logic for a payroll application compatible with Acumatica. While integration testing was not possible due to limited access to the framework, the implementation aligns with Acumatica's principles and can be extended further with a working instance.
