@@ -1,0 +1,104 @@
+# Payroll Application
+
+## Prerequisites
+
+1. **Visual Studio**:
+   - Install **Visual Studio 2022** or later with the following workloads:
+     - .NET Desktop Development
+     - ASP.NET and Web Development
+
+2. **NuGet Packages**:
+   - Ensure the following NuGet packages are installed in the solution:
+     - `RestSharp`
+     - `Newtonsoft.Json`
+
+3. **Acumatica ERP Instance**:
+   - You will need access to an Acumatica ERP instance.
+   - If you do not already have an instance, set up a new Acumatica instance for testing.
+
+---
+
+## Configuration Steps
+
+### 1. Clone the Repository
+Clone this repository to your local machine:
+```bash
+git clone <repository-url>
+```
+
+### 2. Open in Visual Studio
+- Open the `.sln` file in Visual Studio.
+
+### 3. Configure the `RestClient`
+- Locate the configuration file (`App.config`, `appsettings.json`, or inline code) and update the `baseUrl` to match your Acumatica instance:
+  ```json
+  {
+    "baseUrl": "https://<your-instance-url>/entity/<erp-name>/<version>"
+  }
+  ```
+
+### 4. Update Login Credentials
+- Replace the placeholders with the correct credentials for your Acumatica instance:
+  ```csharp
+  var request = new RestRequest("auth/login", Method.POST);
+  request.AddJsonBody(new
+  {
+      name = "<username>",
+      password = "<password>"
+  });
+  ```
+
+### 5. Configure Ports (if necessary)
+- If the application uses a specific port, ensure the port is updated to one that is available on your machine. This can typically be done in `launchSettings.json` or IIS Express settings.
+
+### 6. Set the Startup Project
+- Ensure the executable project (e.g., `PayrollApp`) is set as the **Startup Project** in Visual Studio.
+
+---
+
+## Running the Application
+
+1. Build the solution to restore all dependencies:
+   - In Visual Studio, click **Build > Build Solution**.
+
+2. Run the application:
+   - Press `F5` or click **Start** to launch the application.
+
+---
+
+## Notes
+
+- **REST API**: The application communicates with Acumatica via REST API. Ensure that:
+  - The API endpoint is enabled.
+  - The instance URL, username, and password are correctly configured.
+
+- **Environment-Specific Configuration**:
+  - Ports, base URLs, and credentials will differ based on the setup environment. Please review and update these settings before running.
+
+---
+
+## Common Issues
+
+### 1. **401 Unauthorized**
+- Ensure the credentials (username and password) are correct.
+- Verify that the user account has the necessary API permissions in Acumatica.
+
+### 2. **Endpoint Not Found**
+- Confirm that the REST API is enabled in your Acumatica instance.
+- Check that the `baseUrl` is correctly configured.
+
+### 3. **Port Conflicts**
+- If the port is already in use, update the port configuration in `launchSettings.json` or IIS Express settings.
+
+---
+
+## Debugging Tips
+
+1. Use Visual Studio's debugger to step through the code and identify issues.
+2. Check the Acumatica instance logs for API request errors.
+
+
+---
+
+## Contact
+For any issues or further assistance, please reach out to mhlonyaneanga@gmail.com.
