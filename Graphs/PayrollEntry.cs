@@ -1,16 +1,16 @@
-﻿using PX.Data;
-using System;
+﻿using PayrollApp.Models;
+using PX.Data;
 
-public class PayrollEntry : PXGraph<PayrollEntry, Payroll>
+public class PayrollEntry : PXGraph<PayrollEntry, PayrollDetails>
 {
-    public PXSelect<Payroll> Payrolls;
+    public PXSelect<PayrollDetails> Payrolls;
 
-    public PXAction<Payroll> RecalculatePayroll;
+    public PXAction<PayrollDetails> RecalculatePayroll;
     [PXButton]
     [PXUIField(DisplayName = "Recalculate Payroll")]
     protected void recalculatePayroll()
     {
-        foreach (Payroll record in Payrolls.Select())
+        foreach (PayrollDetails record in Payrolls.Select())
         {
             if (record.GrossPay.HasValue && record.Deductions.HasValue)
             {
@@ -28,7 +28,7 @@ public class PayrollEntry : PXGraph<PayrollEntry, Payroll>
     }
 
     // Validation for Gross Pay
-    protected void _(Events.FieldVerifying<Payroll.grossPay> e)
+    protected void _(Events.FieldVerifying<PayrollDetails.grossPay> e)
     {
         if ((decimal?)e.NewValue <= 0)
         {
@@ -37,9 +37,9 @@ public class PayrollEntry : PXGraph<PayrollEntry, Payroll>
     }
 
     // Validation for Deductions
-    protected void _(Events.FieldVerifying<Payroll.deductions> e)
+    protected void _(Events.FieldVerifying<PayrollDetails.deductions> e)
     {
-        Payroll record = (Payroll)e.Row;
+        PayrollDetails record = (PayrollDetails)e.Row;
         if ((decimal?)e.NewValue > record.GrossPay)
         {
             throw new PXSetPropertyException("Deductions cannot exceed Gross Pay.");

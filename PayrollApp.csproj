@@ -27,4 +27,18 @@
     </COMReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="RestSharp" Version="110.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="PX.Common">
+      <HintPath>..\..\..\..\..\Program Files\Acumatica Framework\PayrollFrameworkDB\Site\Bin\PX.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="PX.Data">
+      <HintPath>..\..\..\..\..\Program Files\Acumatica Framework\Project_template\Site\Bin\PX.Data.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

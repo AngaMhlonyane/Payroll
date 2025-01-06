@@ -1,10 +1,10 @@
-﻿namespace Payroll.Models
+﻿namespace PayrollApp.Models
 {
     using PX.Data;
 
     [Serializable]
     [PXCacheName("Payroll")]
-    public class Payroll : IBqlTable
+    public class PayrollDetails : IBqlTable
     {
         [PXDBIdentity(IsKey = true)]
         [PXUIField(DisplayName = "Payroll ID")]
@@ -42,5 +42,13 @@
         [PXFormula(typeof(Mult<grossPay, Div<taxRate, decimal100>>))]
         public virtual decimal? TaxAmount { get; set; }
         public abstract class taxAmount : PX.Data.BQL.BqlDecimal.Field<taxAmount> { }
+
+        // Constant for decimal100
+        public const decimal Decimal100 = 100m;
+
+        public class decimal100 : PX.Data.BQL.BqlDecimal.Constant<decimal100>
+        {
+            public decimal100() : base(Decimal100) { }
+        }
     }
 }
