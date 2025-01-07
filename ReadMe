@@ -102,3 +102,18 @@ You can test the REST API functionality by:
 ---
 
 Feel free to reach out if you encounter any issues while setting up or running the application.
+
+Acumatica Configuration Wizard
+
+Instance information
+
+Instance Name: PayrollFrameworkDB
+Instance Type: RegularSite
+Instance Files Path: C:\Program Files\Acumatica Framework\PayrollFrameworkDB\Site
+Database: (localdb)\mssqllocaldb\PayrollFrameworkDB
+Database Version: 21.225.0006
+Files Version: 21.225.0006
+Instance URL: http://localhost:81/PayrollFrameworkDB/
+Web Site Name: PayrollDev
+Virtual Directory Name: PayrollFrameworkDB
+
