@@ -1,5 +1,6 @@
 ﻿using System;
 using RestSharp;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 class Program
@@ -14,18 +15,14 @@ class Program
         // Step 1: Create RestClient
         var options = new RestClientOptions(baseUrl)
         {
-            ThrowOnAnyError = true, // Automatically handle errors
-           // Timeout = 10000 // Set timeout (in milliseconds)
+            ThrowOnAnyError = true,
+            Timeout = TimeSpan.FromSeconds(10)
         };
         var client = new RestClient(options);
 
         // Step 2: Login to Acumatica
         var loginRequest = new RestRequest("entity/auth/login", Method.Post);
-        loginRequest.AddJsonBody(new
-        {
-            name = username,
-            password = password
-        });
+        loginRequest.AddJsonBody(new { name = username, password = password });
 
         try
         {
@@ -34,13 +31,18 @@ class Program
             {
                 Console.WriteLine("Login Successful!");
 
+                // Extract token and set default authorization header
+                var loginData = JObject.Parse(loginResponse.Content);
+                string token = loginData["token"].ToString();
+                client.AddDefaultHeader("Authorization", $"Bearer {token}");
+
                 // Step 3: Fetch Payroll Records
                 var payrollRequest = new RestRequest($"{endpoint}/PayrollDetails", Method.Get);
                 var payrollResponse = await client.ExecuteAsync(payrollRequest);
 
                 if (payrollResponse.IsSuccessful)
                 {
-                    var payrollData = JArray.Parse(payrollResponse.Content);
+                    var payrollData = JsonConvert.DeserializeObject<dynamic>(payrollResponse.Content);
                     Console.WriteLine($"Payroll Records: {payrollData}");
                 }
                 else
